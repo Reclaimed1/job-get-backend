@@ -1,0 +1,14 @@
+import { Schema,model} from 'mongoose'
+
+const appSchema=new Schema({
+
+    jobId:{type:Schema.Types.ObjectId, ref:"Jobs", required:true},
+    workerId:{type:Schema.Types.ObjectId, ref:"User", required:true},
+    employerId:{type:Schema.Types.ObjectId, ref:"User", required:true},
+    status:{type:String,enum:["applied","shortlisted","shortlisted","completed","rejected"]},
+    coverLetter:{type:String},
+   appliedAt:{type:Date,default:Date.now}
+});
+
+const Application=model('Application',appSchema);
+export default Application;
