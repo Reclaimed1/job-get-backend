@@ -2,6 +2,7 @@ import User from '../model/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { configDotenv } from 'dotenv';
+import { welcomeMessage } from './email.service.js';
 configDotenv();
 
 export const register=async(userdata)=>{
@@ -21,8 +22,10 @@ export const register=async(userdata)=>{
                 phone:userdata.phone,
                 skills:userdata.skills,
                 bio:userdata.bio,
+                profileImage:"",
                 
-        })   
+        })  
+        welcomeMessage(userdata.email,userdata.name,userdata.role); 
         await newUser.save();
         return newUser;     
         } catch (error) {
@@ -34,10 +37,11 @@ export const register=async(userdata)=>{
 };
 export const login=async(email,password)=>{
     const user=await User.findOne({email});
-    const isMatch=await bcrypt.compare(password,user.password);
     if(!user){
         throw new Error("Invalid email");
-    }if(!isMatch){
+    }
+     const isMatch=await bcrypt.compare(password,user.password);
+    if(!isMatch){
         throw new Error("Invalid password");
     }
     else{

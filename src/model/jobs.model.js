@@ -13,7 +13,7 @@ const jobsSchema=new Schema({
     createAt:{type:Date,default:Date.now},
     deadline:{type:Date, required:true},
     applicants:[{
-        applicant:{type:Schema.Types.ObjectId, ref:"user"}
+        applicant:{type:Schema.Types.ObjectId, ref:"user"},
     }],
 });
 

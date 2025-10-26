@@ -15,11 +15,17 @@ export const createJob=async(req,res)=>{
 
 }
 export const getAllJobs=async(req,res)=>{
-    const jobs=await jobServices.getAllJobs();
-    if(jobs==="Error getting all jobs"){
-        return res.status(400).json(jobs);
+    try {
+         const jobs=await jobServices.getAllJobs();
+          res.status(200).json(jobs);
+    } catch (error) {
+         if(error.message==="Error getting all jobs"){
+       return res.status(400).json(jobs);
     }
-    res.status(200).json(jobs);
+    }
+   
+   
+    
 }
 export const updateJob=async(req,res)=>{
     const{employerId}=req.user;
@@ -30,4 +36,11 @@ export const updateJob=async(req,res)=>{
         return res.status(400).json({error:job});
     }
     res.status(200).json(job);
+}
+export const deleteJob=async(req,res)=>{
+    const job=await jobServices.deleteJob(req.body);
+    if(job==="Unable to delete job post"){
+        return res.status(400).json({error:job})
+    }
+    res.status(200).json({message:"Deleted successfuly"});
 }

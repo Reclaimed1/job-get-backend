@@ -5,7 +5,7 @@ const appSchema=new Schema({
     jobId:{type:Schema.Types.ObjectId, ref:"Jobs", required:true},
     workerId:{type:Schema.Types.ObjectId, ref:"User", required:true},
     employerId:{type:Schema.Types.ObjectId, ref:"User", required:true},
-    status:{type:String,enum:["applied","shortlisted","shortlisted","completed","rejected"]},
+    status:{type:String,enum:["applied","shortlisted","completed","rejected"],default:"applied"},
     coverLetter:{type:String},
    appliedAt:{type:Date,default:Date.now}
 });
