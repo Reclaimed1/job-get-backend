@@ -1,5 +1,4 @@
 import Jobs from '../model/jobs.model.js';
-import User from '../model/user.model.js'
 export const createJob=async(jobData)=>{
     try {
         const newJob=await Jobs.create({
@@ -10,7 +9,6 @@ export const createJob=async(jobData)=>{
          city:jobData.city,
          payRate:jobData.payRate,
          jobType:jobData.jobType,
-         deadline:jobData.deadline
         })
         await newJob.save();
         return newJob;
@@ -21,7 +19,7 @@ export const createJob=async(jobData)=>{
 }
 export const getAllJobs=async()=>{
     try {
-        const jobs=await Jobs.find();
+        const jobs=await Jobs.find().populate("employerId").select("-password");
         return jobs;
     } catch (error) {
         console.log(error);
@@ -55,5 +53,28 @@ export const deleteJob=async(jobId)=>{
     } catch (error) {
         console.log(error);
         return ("Unable to delete job post");
+    }
+}
+export const getUserJob=async(userId)=>{
+    try {
+        const job=await Jobs.find({employerId:userId}).populate("applicants.applicant","name email");
+        return job;
+    } catch (error) {
+        throw error;
+    }
+}
+export const applyJob=async(id,workerId)=>{
+    try {
+    const job = await Jobs.findById(id);
+    if(!job){throw new Error ("Job not found")};
+    if (job.applicants.some(a => a.applicant.toString() === workerId)) {
+ return("You already applied for this job");
+}  
+     job.applicants.push({ applicant: workerId });
+    await job.save();
+
+    return job;
+    } catch (error) {
+        throw error
     }
 }

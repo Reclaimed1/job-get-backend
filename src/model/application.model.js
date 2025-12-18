@@ -2,7 +2,7 @@ import { Schema,model} from 'mongoose'
 
 const appSchema=new Schema({
 
-    jobId:{type:Schema.Types.ObjectId, ref:"Jobs", required:true},
+    jobId:{type:Schema.Types.ObjectId, ref:"Job", required:true},
     workerId:{type:Schema.Types.ObjectId, ref:"User", required:true},
     employerId:{type:Schema.Types.ObjectId, ref:"User", required:true},
     status:{type:String,enum:["applied","shortlisted","completed","rejected"],default:"applied"},

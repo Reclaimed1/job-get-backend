@@ -23,9 +23,7 @@ export const getAllJobs=async(req,res)=>{
        return res.status(400).json(jobs);
     }
     }
-   
-   
-    
+     
 }
 export const updateJob=async(req,res)=>{
     const{employerId}=req.user;
@@ -38,9 +36,38 @@ export const updateJob=async(req,res)=>{
     res.status(200).json(job);
 }
 export const deleteJob=async(req,res)=>{
-    const job=await jobServices.deleteJob(req.body);
+    const id=req.params.id;
+    const job=await jobServices.deleteJob(id);
     if(job==="Unable to delete job post"){
         return res.status(400).json({error:job})
     }
     res.status(200).json({message:"Deleted successfuly"});
+}
+export const getUserJob=async(req,res)=>{
+    try {
+        const id=req.params.id;
+        const user=await jobServices.getUserJob(id);
+        if(!user){
+            return res.status(400).json({message:"No job found for the user"});
+        }
+        res.status(200).json(user);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+export const applyForJob=async(req,res)=>{
+    try {
+        const id=req.id.params;
+        console.log(id);
+        const workerId=req.body;
+        const apply=await jobServices.applyJob(id,workerId);
+        if(apply==="You already applied for this job"){
+            return res.status(400).json({message:apply})
+        }
+        res.status(200).json({apply});
+    } catch (error) {
+         console.error("Error apllying for job:", error);
+    res.status(500).json({ message: "Internal server error" });
+    }
 }

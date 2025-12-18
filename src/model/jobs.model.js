@@ -11,12 +11,11 @@ const jobsSchema=new Schema({
     jobType:{type:String, enum:["full-time","part-time"], default:"full-time"},
     status:{type:String, enum:["open","in-progress","completed"], default:"open"},
     createAt:{type:Date,default:Date.now},
-    deadline:{type:Date, required:true},
     applicants:[{
-        applicant:{type:Schema.Types.ObjectId, ref:"user"},
+        applicant:{type:Schema.Types.ObjectId, ref:"User"},
     }],
 });
 
-const Jobs=model("Jobs",jobsSchema);
+const Jobs=model("Job",jobsSchema);
 
 export default Jobs;
